@@ -3,9 +3,7 @@
 
 ##怎么使用：
 
-CcRadarChart：雷达图-六芒星图
-
-使用gradle：
+###使用gradle：
 build.gradle添加「Project」：
 ~~~xml
 allprojects {
@@ -31,4 +29,7 @@ compile 'com.oom.cccharts:cc-charts:1.0.0'
 ~~~
 
 最好设置一个合理的高度，保证图表正常显示.
+
+
+##CcRadarChart：雷达图-六芒星图：
 
