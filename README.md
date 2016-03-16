@@ -35,8 +35,8 @@ compile 'com.oom.cccharts:cc-charts:1.0.0'
 
 包含：
 CcRadarDataEntity「数据实体」：
-    value：值 
-    index：索引
+    ~value：值 
+    ~index：索引
 你可以通过 
 ~~~java
     CcChartsDataEntity entity = new CcChartsDataEntity(value, index);
