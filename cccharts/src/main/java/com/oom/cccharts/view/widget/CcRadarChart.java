@@ -103,12 +103,12 @@ public class CcRadarChart extends View {
     @Override
     protected void onDraw( Canvas canvas ) {
 
-        label = dataSet.getLabelData();
-        if ( label == null || label.getLabelData().size() < 2 ) {
+        if ( dataSet == null || label == null || label.getLabelData().size() < 2 ) {
             mPaint.setColor( Color.RED );
             mPaint.setStyle( Style.FILL );
             canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
         } else {
+            label = dataSet.getLabelData();
             initRadarChart();
             drawLabel( canvas );
             if ( label.getStyle() == CcStyle.Circle ) {
