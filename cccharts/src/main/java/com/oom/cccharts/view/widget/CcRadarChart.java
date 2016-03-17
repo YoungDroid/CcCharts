@@ -9,6 +9,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -102,13 +103,17 @@ public class CcRadarChart extends View {
 
     @Override
     protected void onDraw( Canvas canvas ) {
+        if ( dataSet == null ) {
+            canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
+        } else {
+            label = dataSet.getLabelData();
+        }
 
-        if ( dataSet == null || label == null || label.getLabelData().size() < 2 ) {
+        if ( label == null || label.getLabelData().size() < 2 ) {
             mPaint.setColor( Color.RED );
             mPaint.setStyle( Style.FILL );
             canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
         } else {
-            label = dataSet.getLabelData();
             initRadarChart();
             drawLabel( canvas );
             if ( label.getStyle() == CcStyle.Circle ) {
@@ -273,6 +278,7 @@ public class CcRadarChart extends View {
 
     public void setData( CcRadarChartDataSet dataSet ) {
         this.dataSet = dataSet;
+        postInvalidate();
     }
 
     private float sinAngleRadius( float angle ) {

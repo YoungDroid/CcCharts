@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText( MainActivity.this, "label: " + label.getWords() + "\nindex: " + index, Toast.LENGTH_SHORT ).show();
             }
         } );
-        rcMain.invalidate();
+//        rcMain.invalidate();
     }
 }
 
