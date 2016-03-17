@@ -1,9 +1,9 @@
 package com.oom.simple;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.oom.cccharts.model.CcRadarChartData;
 import com.oom.cccharts.model.CcRadarChartDataEntity;
@@ -12,6 +12,7 @@ import com.oom.cccharts.model.CcRadarChartLabel;
 import com.oom.cccharts.model.CcRadarChartLabel.CcStyle;
 import com.oom.cccharts.model.CcRadarChartLabelEntity;
 import com.oom.cccharts.view.widget.CcRadarChart;
+import com.oom.cccharts.view.widget.CcRadarChart.CcAnimation;
 import com.oom.cccharts.view.widget.CcRadarChart.OnLabelClickListener;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         labelData.setLabelCount( 3 );
         labelData.setMaxValue( 200 );
         labelData.setMinValue( 60 );
-        CcRadarChartLabelEntity chartLabel1 = new CcRadarChartLabelEntity();
+        final CcRadarChartLabelEntity chartLabel1 = new CcRadarChartLabelEntity();
         chartLabel1.setWords( "补刀" );
         chartLabel1.setTextSize( 60 );
         CcRadarChartLabelEntity chartLabel2 = new CcRadarChartLabelEntity();
@@ -91,14 +92,17 @@ public class MainActivity extends AppCompatActivity {
         dataSet.addRadarChartData( datas2 );
 
         rcMain = ( CcRadarChart ) findViewById( R.id.rc_main );
+
         rcMain.setData( dataSet );
+        rcMain.setAnimation( CcAnimation.ToLarge, 500 );
         rcMain.setOnLabelClickListener( new OnLabelClickListener() {
             @Override
             public void onLabelClickListener( CcRadarChartLabelEntity label, int index ) {
-                Toast.makeText( MainActivity.this, "label: " + label.getWords() + "\nindex: " + index, Toast.LENGTH_SHORT ).show();
+                Log.e( "CcRadarChart", "label: " + label.getWords() + "\nindex: " + index );
+                chartLabel1.setWords( "Hello" );
+                rcMain.invalidate();
             }
         } );
-//        rcMain.invalidate();
     }
 }
 

@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -44,8 +43,10 @@ public class CcRadarChart extends View {
         ToLarge
     }
 
-    public void setAnimation( CcAnimation animation ) {
+    public void setAnimation( CcAnimation animation, float duration ) {
         this.animation = animation;
+        this.duration = duration;
+        ccAnimate();
     }
 
     public void setDuration( float duration ) {
@@ -277,8 +278,43 @@ public class CcRadarChart extends View {
     }
 
     public void setData( CcRadarChartDataSet dataSet ) {
+        this.setData( dataSet, null );
+    }
+
+    public void setData( CcRadarChartDataSet dataSet, CcAnimation animation ) {
+        this.setData( dataSet, animation, 1000 );
+    }
+
+    public void setData( CcRadarChartDataSet dataSet, CcAnimation animation, final float duration ) {
         this.dataSet = dataSet;
-        postInvalidate();
+        this.animation = animation;
+        this.duration = duration;
+        if ( animation != null ) {
+            ccAnimate();
+        }
+    }
+
+    private void ccAnimate() {
+        if ( animation == CcAnimation.ToLarge ) {
+            mToLarge = 0;
+            new Thread() {
+                @Override
+                public void run() {
+                    while ( true ) {
+                        if ( mToLarge >= 1 ) {
+                            break;
+                        }
+                        mToLarge += 1.0 / ( duration / 20.0 );
+                        postInvalidate();
+                        try {
+                            Thread.sleep( 20 );
+                        } catch ( InterruptedException e ) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+        }
     }
 
     private float sinAngleRadius( float angle ) {
@@ -287,10 +323,6 @@ public class CcRadarChart extends View {
 
     private float cosAngleRadius( float angle ) {
         return ( float ) ( Math.cos( angle * Math.PI / 180.0f ) * radiusBig - 0.5 );
-    }
-
-    public void invalidate() {
-        postInvalidate();
     }
 
     public interface OnLabelClickListener {
