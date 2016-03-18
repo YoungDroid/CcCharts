@@ -2,17 +2,12 @@ package com.oom.cccharts.model;
 
 import android.graphics.Color;
 
-import java.util.ArrayList;
-
-public class CcRadarChartLabel {
-
-    ArrayList< CcRadarChartLabelEntity > labelData;
+public class CcRadarChartLabel extends CcChartLabel {
     int labelCount;
-    int labelColor;
-    float labelStrokeWidth;
     float minValue;
     float maxValue;
-    int index;
+    int labelColor;
+    float labelStrokeWidth;
 
     CcStyle style;
 
@@ -21,22 +16,13 @@ public class CcRadarChartLabel {
     }
 
     public CcRadarChartLabel() {
-        index = 0;
-        labelData = new ArrayList<>();
+        super();
         labelCount = 2;
-        labelColor = Color.GRAY;
-        labelStrokeWidth = 4;
+        style = CcStyle.Circle;
         minValue = 0;
         maxValue = 100;
-        style = CcStyle.Circle;
-    }
-
-    public int getLabelCount() {
-        return labelCount;
-    }
-
-    public void setLabelCount( int labelCount ) {
-        this.labelCount = labelCount;
+        labelColor = Color.GRAY;
+        labelStrokeWidth = 4;
     }
 
     public int getLabelColor() {
@@ -53,6 +39,14 @@ public class CcRadarChartLabel {
 
     public void setLabelStrokeWidth( float labelStrokeWidth ) {
         this.labelStrokeWidth = labelStrokeWidth;
+    }
+
+    public int getLabelCount() {
+        return labelCount;
+    }
+
+    public void setLabelCount( int labelCount ) {
+        this.labelCount = labelCount;
     }
 
     public float getMinValue() {
@@ -77,20 +71,5 @@ public class CcRadarChartLabel {
 
     public void setStyle( CcStyle style ) {
         this.style = style;
-    }
-
-    public ArrayList< CcRadarChartLabelEntity > getLabelData() {
-        return labelData;
-    }
-
-    public void setLabelData( ArrayList< CcRadarChartLabelEntity > labelData ) {
-        this.labelData = labelData;
-    }
-
-    public void addEntity( CcRadarChartLabelEntity entity ) {
-        if ( labelData != null && entity != null ) {
-            entity.setIndex( index++ );
-            labelData.add( entity );
-        }
     }
 }

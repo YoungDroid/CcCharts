@@ -1,27 +1,12 @@
 package com.oom.cccharts.model;
 
-public class CcRadarChartDataEntity {
-    float value;
-    int index;
+public class CcRadarChartDataEntity extends CcChartDataEntity {
+
+    public CcRadarChartDataEntity() {
+        super( 0, -1 );
+    }
 
     public CcRadarChartDataEntity( float value, int index ) {
-        this.value = value;
-        this.index = index;
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue( float value ) {
-        this.value = value;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex( int index ) {
-        this.index = index;
+        super( value, index );
     }
 }

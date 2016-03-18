@@ -2,46 +2,30 @@ package com.oom.cccharts.view.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.oom.cccharts.model.CcRadarChartData;
-import com.oom.cccharts.model.CcRadarChartDataSet;
 import com.oom.cccharts.model.CcRadarChartLabel;
 import com.oom.cccharts.model.CcRadarChartLabel.CcStyle;
-import com.oom.cccharts.model.CcRadarChartLabelEntity;
 
-public class CcRadarChart extends View {
-
-    private Paint mPaint;
+public class CcRadarChart extends CcChart {
 
     private float radiusBig;
     private float centerX;
     private float centerY;
-
-    private float mTextSize = 30;
-    private Rect mTextBounds;
-    private String mText = "You need some useful data.";
-
-    private OnLabelClickListener listener;
-    private CcRadarChartDataSet dataSet;
-
-    private CcRadarChartLabel label;
-
-    private CcAnimation animation;
     private float duration;
     private float mToLarge;
+
+    private CcAnimation animation;
 
     public enum CcAnimation {
         ToLarge
     }
+
+    private CcRadarChartLabel label;
 
     public void setAnimation( CcAnimation animation, float duration ) {
         this.animation = animation;
@@ -63,38 +47,13 @@ public class CcRadarChart extends View {
 
     public CcRadarChart( Context context, AttributeSet attrs, int defStyleAttr ) {
         super( context, attrs, defStyleAttr );
-        mPaint = new Paint();
-        mPaint.setTextSize( mTextSize );
-        mTextBounds = new Rect();
-        mPaint.getTextBounds( mText, 0, mText.length(), mTextBounds );
+    }
+
+    @Override
+    public void init() {
+        super.init();
         duration = 1000;
         mToLarge = 1;
-
-        this.setOnTouchListener( new OnTouchListener() {
-            @Override
-            public boolean onTouch( View v, MotionEvent event ) {
-                float touchX, touchY;
-                switch ( event.getAction() ) {
-                    case MotionEvent.ACTION_DOWN:
-                        touchX = event.getX();
-                        touchY = event.getY();
-                        for ( int i = 0; i < label.getLabelData().size(); i++ ) {
-                            int result = label.getLabelData().get( i ).checkClick( touchX, touchY );
-                            if ( result != -1 && listener != null ) {
-                                listener.onLabelClickListener( label.getLabelData().get( result ), result );
-                                return true;
-                            }
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
-                }
-
-                return false;
-            }
-        } );
     }
 
     @Override
@@ -104,30 +63,23 @@ public class CcRadarChart extends View {
 
     @Override
     protected void onDraw( Canvas canvas ) {
-        if ( dataSet == null ) {
-            canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
-        } else {
-            label = dataSet.getLabelData();
+        super.onDraw( canvas );
+    }
+
+    @Override
+    public void drawChart( Canvas canvas ) {
+        initRadarChart();
+        drawLabel( canvas );
+        if ( label.getStyle() == CcStyle.Circle ) {
+            drawBackgroundCircle( canvas );
+        } else if ( label.getStyle() == CcStyle.Rect ) {
+            drawBackgroundRect( canvas );
         }
 
-        if ( label == null || label.getLabelData().size() < 2 ) {
-            mPaint.setColor( Color.RED );
-            mPaint.setStyle( Style.FILL );
-            canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
+        if ( dataSet.getChartDatas() == null || dataSet.getChartDatas().isEmpty() ) {
+            // data error
         } else {
-            initRadarChart();
-            drawLabel( canvas );
-            if ( label.getStyle() == CcStyle.Circle ) {
-                drawBackgroundCircle( canvas );
-            } else if ( label.getStyle() == CcStyle.Rect ) {
-                drawBackgroundRect( canvas );
-            }
-
-            if ( dataSet.getDataSet() == null || dataSet.getDataSet().isEmpty() ) {
-                // data error
-            } else {
-                drawValuesAnimation( canvas );
-            }
+            drawValuesAnimation( canvas );
         }
     }
 
@@ -137,8 +89,8 @@ public class CcRadarChart extends View {
     }
 
     private void drawValues( Canvas canvas ) {
-        for ( int i = 0; i < dataSet.getDataSet().size(); i++ ) {
-            CcRadarChartData data = dataSet.getDataSet().get( i );
+        for ( int i = 0; i < dataSet.getChartDatas().size(); i++ ) {
+            CcRadarChartData data = ( CcRadarChartData ) dataSet.getChartDatas().get( i );
             Path path = new Path();
             float value = ( data.getEntities().get( 0 ).getValue() - label.getMinValue() ) * mToLarge;
             float length = label.getMaxValue() - label.getMinValue();
@@ -171,13 +123,13 @@ public class CcRadarChart extends View {
     }
 
     private void checkValue() {
-        for ( int i = 0; i < dataSet.getDataSet().size(); i++ ) {
-            for ( int j = 0; j < dataSet.getDataSet().get( i ).getEntities().size(); j++ ) {
-                if ( dataSet.getDataSet().get( i ).getEntities().get( j ).getValue() > dataSet.getLabelData().getMaxValue() ) {
-                    dataSet.getLabelData().setMaxValue( dataSet.getDataSet().get( i ).getEntities().get( j ).getValue() + 10 );
+        for ( int i = 0; i < dataSet.getChartDatas().size(); i++ ) {
+            for ( int j = 0; j < dataSet.getChartDatas().get( i ).getEntities().size(); j++ ) {
+                if ( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() > label.getMaxValue() ) {
+                    label.setMaxValue( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() + 10 );
                 }
-                if ( dataSet.getDataSet().get( i ).getEntities().get( j ).getValue() < dataSet.getLabelData().getMinValue() ) {
-                    dataSet.getLabelData().setMinValue( dataSet.getDataSet().get( i ).getEntities().get( j ).getValue() + 10 );
+                if ( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() < label.getMinValue() ) {
+                    label.setMinValue( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() + 10 );
                 }
             }
         }
@@ -231,7 +183,7 @@ public class CcRadarChart extends View {
             label.getLabelData().get( i ).getPaint().getTextBounds( mText, 0, mText.length(), mTextBounds );
             float drawWordsX = label.getLabelData().get( i ).getX() == centerX ? label.getLabelData().get( i ).getX() - mTextBounds.width() / 2 : label.getLabelData().get( i ).getX() < centerX ? label.getLabelData().get( i ).getX() - mTextBounds.width() * 1.1f : label.getLabelData().get( i ).getX();
             float drawWordsY = label.getLabelData().get( i ).getY() == centerY ? label.getLabelData().get( i ).getY() + mTextBounds.height() / 2 : label.getLabelData().get( i ).getY() < centerY ? label.getLabelData().get( i ).getY() - mTextBounds.height() * 0.2f : label.getLabelData().get( i ).getY() + mTextBounds.height();
-            label.getLabelData().get( i ).setTouchArea( drawWordsX, drawWordsY, drawWordsX + mTextBounds.width(), drawWordsY - mTextBounds.height() );
+            label.getLabelData().get( i ).setLocation( drawWordsX, drawWordsY );
             canvas.drawText( mText, drawWordsX, drawWordsY, label.getLabelData().get( i ).getPaint() );
         }
     }
@@ -275,23 +227,7 @@ public class CcRadarChart extends View {
         centerX = getWidth() / 2;
         centerY = getHeight() / 2;
         radiusBig = ( centerX > centerY ? centerY : centerX ) * 3 / 4;
-    }
-
-    public void setData( CcRadarChartDataSet dataSet ) {
-        this.setData( dataSet, null );
-    }
-
-    public void setData( CcRadarChartDataSet dataSet, CcAnimation animation ) {
-        this.setData( dataSet, animation, 1000 );
-    }
-
-    public void setData( CcRadarChartDataSet dataSet, CcAnimation animation, final float duration ) {
-        this.dataSet = dataSet;
-        this.animation = animation;
-        this.duration = duration;
-        if ( animation != null ) {
-            ccAnimate();
-        }
+        label = ( CcRadarChartLabel ) dataSet.getLabelData();
     }
 
     private void ccAnimate() {
@@ -323,13 +259,5 @@ public class CcRadarChart extends View {
 
     private float cosAngleRadius( float angle ) {
         return ( float ) ( Math.cos( angle * Math.PI / 180.0f ) * radiusBig - 0.5 );
-    }
-
-    public interface OnLabelClickListener {
-        void onLabelClickListener( CcRadarChartLabelEntity label, int index );
-    }
-
-    public void setOnLabelClickListener( OnLabelClickListener listener ) {
-        this.listener = listener;
     }
 }
