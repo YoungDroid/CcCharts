@@ -6,8 +6,8 @@ publish {
     userOrg = 'yz253233154'
     groupId = 'com.oom.cccharts'
     artifactId = 'cc-charts'
-    publishVersion = '1.0.3'
-    desc = 'NullPointerException because no data.'
+    publishVersion = '1.0.4'
+    desc = 'Add BarChart.'
     website = 'https://github.com/yz253233154/CcCharts'
 }
 
