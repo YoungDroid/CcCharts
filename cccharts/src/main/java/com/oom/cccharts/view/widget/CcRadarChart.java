@@ -182,7 +182,7 @@ public class CcRadarChart extends CcChart {
             mTextBounds = label.getLabelData().get( i ).getBounds();
             label.getLabelData().get( i ).getPaint().getTextBounds( mText, 0, mText.length(), mTextBounds );
             float drawWordsX = label.getLabelData().get( i ).getX() == centerX ? label.getLabelData().get( i ).getX() - mTextBounds.width() / 2 : label.getLabelData().get( i ).getX() < centerX ? label.getLabelData().get( i ).getX() - mTextBounds.width() * 1.1f : label.getLabelData().get( i ).getX();
-            float drawWordsY = label.getLabelData().get( i ).getY() == centerY ? label.getLabelData().get( i ).getY() + mTextBounds.height() / 2 : label.getLabelData().get( i ).getY() < centerY ? label.getLabelData().get( i ).getY() - mTextBounds.height() * 0.2f : label.getLabelData().get( i ).getY() + mTextBounds.height();
+            float drawWordsY = label.getLabelData().get( i ).getY() >= centerY-5 && label.getLabelData().get( i ).getY() <= centerY+5 ? label.getLabelData().get( i ).getY() + mTextBounds.height() / 2 : label.getLabelData().get( i ).getY() < centerY ? label.getLabelData().get( i ).getY() - mTextBounds.height() * 0.2f : label.getLabelData().get( i ).getY() + mTextBounds.height();
             label.getLabelData().get( i ).setLocation( drawWordsX, drawWordsY );
             canvas.drawText( mText, drawWordsX, drawWordsY, label.getLabelData().get( i ).getPaint() );
         }

@@ -10,8 +10,8 @@ import android.graphics.Rect;
  */
 public class CcChartLabelEntity {
 
-    public static final int DEFAULT_TEXT_SIZE = 40;
-    public static final int DEFAULT_TEXT_STROKE = 2;
+    public static final int DEFAULT_TEXT_SIZE = 36;
+    public static final int DEFAULT_TEXT_STROKE = 1;
 
     protected int index;
     protected float x, y;
@@ -27,8 +27,7 @@ public class CcChartLabelEntity {
         y = 0;
         paint = new Paint();
         paint.setColor( Color.GRAY );
-        paint.setStyle( Style.FILL_AND_STROKE );
-        paint.setStrokeWidth( DEFAULT_TEXT_STROKE );
+        paint.setAntiAlias( true );
         paint.setTextSize( DEFAULT_TEXT_SIZE );
         bounds = new Rect();
         paint.getTextBounds( this.words, 0, this.words.length(), bounds );

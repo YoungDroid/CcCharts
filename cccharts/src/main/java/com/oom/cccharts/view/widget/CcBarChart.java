@@ -65,7 +65,7 @@ public class CcBarChart extends CcChart {
             for ( int j = 0; j < data.getEntities().size(); j++ ) {
                 CcBarChartDataEntity dataEntity = ( CcBarChartDataEntity ) data.getEntities().get( j );
                 CcBarChartLabelEntity labelEntity = ( CcBarChartLabelEntity ) label.getLabelData().get( j );
-                float drawValueStartX = maxLabelWidth + labelPadding + 1;
+                float drawValueStartX = maxLabelWidth + labelPadding + 2;
                 float drawValueStartY = labelEntity.getY() - labelEntity.getBounds().height() / 3.0f + ( 2.0f * i - dataSet.getChartDatas().size() + 1 ) / 2.0f * data.getStrokeWidth();
                 float drawValueEndX = drawValueStartX + dataEntity.getValue() / label.getMaxValue() * ( getWidth() - drawValueStartX );
                 float drawValueEndY = drawValueStartY;
@@ -75,7 +75,9 @@ public class CcBarChart extends CcChart {
     }
 
     private void checkValue() {
+
         for ( int i = 0; i < dataSet.getChartDatas().size(); i++ ) {
+            dataSet.getChartDatas().get( i ).setStrokeWidth( (getHeight() * 80 / 100 / dataSet.getChartDatas().size() / dataSet.getChartDatas().get( i ).getEntities().size()) );
             for ( int j = 0; j < dataSet.getChartDatas().get( i ).getEntities().size(); j++ ) {
                 if ( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() > label.getMaxValue() ) {
                     label.setMaxValue( dataSet.getChartDatas().get( i ).getEntities().get( j ).getValue() + 10 );
@@ -102,7 +104,7 @@ public class CcBarChart extends CcChart {
         mPaint.setStrokeWidth( 3 );
         mPaint.setStyle( Style.STROKE );
         mPaint.setStrokeCap( Cap.ROUND );
-        canvas.drawLine( maxLabelWidth + labelPadding, labelPadding * 2 / 3, maxLabelWidth + labelPadding, getHeight() - labelPadding * 2 / 3, mPaint );
+        canvas.drawLine( maxLabelWidth + labelPadding, 0, maxLabelWidth + labelPadding, getHeight(), mPaint );
     }
 
     private void initBarChart() {
