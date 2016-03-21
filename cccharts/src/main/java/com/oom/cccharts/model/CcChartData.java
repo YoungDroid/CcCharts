@@ -19,7 +19,7 @@ public class CcChartData {
     public CcChartData() {
         fillColor = Color.LTGRAY;
         alpha = 75;
-        strokeWidth = 4;
+        strokeWidth = 5;
         strokeColor = Color.BLACK;
         drawFill = false;
         entities = new ArrayList<>();

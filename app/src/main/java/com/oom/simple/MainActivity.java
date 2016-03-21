@@ -12,6 +12,12 @@ import com.oom.cccharts.model.CcBarChartLabel;
 import com.oom.cccharts.model.CcBarChartLabelEntity;
 import com.oom.cccharts.model.CcChartLabel.OnLabelClickListener;
 import com.oom.cccharts.model.CcChartLabelEntity;
+import com.oom.cccharts.model.CcLineChartData;
+import com.oom.cccharts.model.CcLineChartDataEntity;
+import com.oom.cccharts.model.CcLineChartDataSet;
+import com.oom.cccharts.model.CcLineChartLabel;
+import com.oom.cccharts.model.CcLineChartLabelEntity;
+import com.oom.cccharts.model.CcLineChartLabelEntity.CcLabelChartType;
 import com.oom.cccharts.model.CcRadarChartData;
 import com.oom.cccharts.model.CcRadarChartDataEntity;
 import com.oom.cccharts.model.CcRadarChartDataSet;
@@ -19,6 +25,7 @@ import com.oom.cccharts.model.CcRadarChartLabel;
 import com.oom.cccharts.model.CcRadarChartLabel.CcStyle;
 import com.oom.cccharts.model.CcRadarChartLabelEntity;
 import com.oom.cccharts.view.widget.CcBarChart;
+import com.oom.cccharts.view.widget.CcLineChart;
 import com.oom.cccharts.view.widget.CcRadarChart;
 import com.oom.cccharts.view.widget.CcRadarChart.CcAnimation;
 
@@ -26,30 +33,70 @@ public class MainActivity extends AppCompatActivity {
 
     private CcRadarChart rcMain;
     private CcBarChart bcMain;
+    private CcLineChart lcMain;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
 
-        initRadarChart();
+//        initRadarChart();
         initBarChart();
+        initLineChart();
+    }
+
+    private void initLineChart() {
+        CcLineChartLabel labelData = new CcLineChartLabel();
+        labelData.setMaxValueY( 200 );
+        CcLineChartLabelEntity labelEntity = new CcLineChartLabelEntity( "平均" );
+        labelEntity.setType( CcLabelChartType.Average );
+
+        labelData.addEntity( labelEntity );
+
+        CcLineChartData chartData = new CcLineChartData();
+        CcLineChartDataEntity dataEntity1 = new CcLineChartDataEntity( 50, 10, 0 );
+        CcLineChartDataEntity dataEntity2 = new CcLineChartDataEntity( 70, 25, 0 );
+        CcLineChartDataEntity dataEntity3 = new CcLineChartDataEntity( 60, 33, 0 );
+        CcLineChartDataEntity dataEntity4 = new CcLineChartDataEntity( 90, 48, 0 );
+        CcLineChartDataEntity dataEntity5 = new CcLineChartDataEntity( 40, 66, 0 );
+        CcLineChartDataEntity dataEntity6 = new CcLineChartDataEntity( 20, 72, 0 );
+        CcLineChartDataEntity dataEntity7 = new CcLineChartDataEntity( 80, 79, 0 );
+        chartData.addEntity( dataEntity1 );
+        chartData.addEntity( dataEntity2 );
+        chartData.addEntity( dataEntity3 );
+        chartData.addEntity( dataEntity4 );
+        chartData.addEntity( dataEntity5 );
+        chartData.addEntity( dataEntity6 );
+        chartData.addEntity( dataEntity7 );
+
+
+        CcLineChartDataSet dataSet = new CcLineChartDataSet();
+        dataSet.setLabelData( labelData );
+        dataSet.addChartData( chartData );
+        lcMain = ( CcLineChart ) findViewById( R.id.lc_main );
+        lcMain.setData( dataSet );
+        labelData.setOnLabelClickListener( new OnLabelClickListener() {
+            @Override
+            public void onLabelClickListener( CcChartLabelEntity label, int index ) {
+                Toast.makeText( MainActivity.this, "" + label.getWords() + "\t" + index, Toast.LENGTH_SHORT ).show();
+            }
+        } );
     }
 
     private void initBarChart() {
-        CcBarChartLabel labelDate = new CcBarChartLabel();
+        CcBarChartLabel labelData = new CcBarChartLabel();
         CcBarChartLabelEntity entity1 = new CcBarChartLabelEntity( "比赛场次" );
         CcBarChartLabelEntity entity2 = new CcBarChartLabelEntity( "场均用时" );
         CcBarChartLabelEntity entity3 = new CcBarChartLabelEntity( "KDA" );
         CcBarChartLabelEntity entity4 = new CcBarChartLabelEntity( "场均推塔" );
         CcBarChartLabelEntity entity5 = new CcBarChartLabelEntity( "场均大龙" );
         CcBarChartLabelEntity entity6 = new CcBarChartLabelEntity( "场均小龙" );
-        labelDate.addEntity( entity1 );
-        labelDate.addEntity( entity2 );
-        labelDate.addEntity( entity3 );
-        labelDate.addEntity( entity4 );
-        labelDate.addEntity( entity5 );
-        labelDate.addEntity( entity6 );
+        labelData.addEntity( entity1 );
+        labelData.addEntity( entity2 );
+        labelData.addEntity( entity3 );
+        labelData.addEntity( entity4 );
+        labelData.addEntity( entity5 );
+        labelData.addEntity( entity6 );
 
         CcBarChartData data = new CcBarChartData();
         CcBarChartDataEntity e1 = new CcBarChartDataEntity( 50, 0 );
@@ -79,14 +126,14 @@ public class MainActivity extends AppCompatActivity {
         data2.addEntity( e26 );
 
         CcBarChartDataSet dataSet = new CcBarChartDataSet();
-        dataSet.setLabelData( labelDate );
+        dataSet.setLabelData( labelData );
         data.setStrokeColor( Color.parseColor( "#F5A623" ) );
         dataSet.addChartData( data );
         data2.setStrokeColor( Color.parseColor( "#7ED321" ) );
         dataSet.addChartData( data2 );
         bcMain = ( CcBarChart ) findViewById( R.id.bc_main );
         bcMain.setData( dataSet );
-        labelDate.setOnLabelClickListener( new OnLabelClickListener() {
+        labelData.setOnLabelClickListener( new OnLabelClickListener() {
             @Override
             public void onLabelClickListener( CcChartLabelEntity label, int index ) {
                 Toast.makeText( MainActivity.this, "" + label.getWords() + "\t" + index, Toast.LENGTH_SHORT ).show();

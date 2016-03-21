@@ -97,7 +97,7 @@ public class CcChart extends View {
             canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );
         } else {
             label = dataSet.getLabelData();
-            if ( label == null || label.getLabelData().size() < 2 ) {
+            if ( label == null || label.getLabelData().size() <= 0 ) {
                 mPaint.setColor( Color.RED );
                 mPaint.setStyle( Style.FILL );
                 canvas.drawText( mText, getWidth() / 2 - mTextBounds.width() / 2, getHeight() / 2, mPaint );

@@ -13,11 +13,17 @@
 
     <com.oom.cccharts.view.widget.CcRadarChart
         android:id="@+id/rc_main"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
 
     <com.oom.cccharts.view.widget.CcBarChart
         android:id="@+id/bc_main"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+    <com.oom.cccharts.view.widget.CcLineChart
+        android:id="@+id/lc_main"
         android:layout_width="match_parent"
         android:layout_height="300dp"/>
 </LinearLayout>
