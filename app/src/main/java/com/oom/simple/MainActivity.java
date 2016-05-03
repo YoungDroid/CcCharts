@@ -54,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
         labelData.addEntity( labelEntity );
 
         CcLineChartData chartData = new CcLineChartData();
-        CcLineChartDataEntity dataEntity1 = new CcLineChartDataEntity( 50, 10, 0 );
+        CcLineChartDataEntity dataEntity1 = new CcLineChartDataEntity( 50, 0, 0 );
         CcLineChartDataEntity dataEntity2 = new CcLineChartDataEntity( 70, 25, 0 );
         CcLineChartDataEntity dataEntity3 = new CcLineChartDataEntity( 60, 33, 0 );
-        CcLineChartDataEntity dataEntity4 = new CcLineChartDataEntity( 90, 48, 0 );
+        CcLineChartDataEntity dataEntity4 = new CcLineChartDataEntity( 100, 48, 0 );
         CcLineChartDataEntity dataEntity5 = new CcLineChartDataEntity( 40, 66, 0 );
-        CcLineChartDataEntity dataEntity6 = new CcLineChartDataEntity( 20, 72, 0 );
-        CcLineChartDataEntity dataEntity7 = new CcLineChartDataEntity( 80, 79, 0 );
+        CcLineChartDataEntity dataEntity6 = new CcLineChartDataEntity( 0, 72, 0 );
+        CcLineChartDataEntity dataEntity7 = new CcLineChartDataEntity( 80, 90, 0 );
         chartData.addEntity( dataEntity1 );
         chartData.addEntity( dataEntity2 );
         chartData.addEntity( dataEntity3 );
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         chartData.addEntity( dataEntity5 );
         chartData.addEntity( dataEntity6 );
         chartData.addEntity( dataEntity7 );
+        labelData.setMinValueX( 0 );
+        labelData.setMaxValueX( 90 );
+        labelData.setMinValueY( 0 );
+        labelData.setMaxValueY( 79 );
 
 
         CcLineChartDataSet dataSet = new CcLineChartDataSet();

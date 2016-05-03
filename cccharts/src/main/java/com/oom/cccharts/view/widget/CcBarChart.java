@@ -35,8 +35,8 @@ public class CcBarChart extends CcChart {
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void init( Context context ) {
+        super.init( context );
         maxLabelWidth = 0;
         labelPadding = 32;
     }

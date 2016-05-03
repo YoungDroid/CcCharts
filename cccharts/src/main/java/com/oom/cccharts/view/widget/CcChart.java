@@ -32,20 +32,20 @@ public class CcChart extends View {
 
     public CcChart( Context context ) {
         super( context );
-        init();
+        init( context );
     }
 
     public CcChart( Context context, AttributeSet attrs ) {
         super( context, attrs );
-        init();
+        init( context );
     }
 
     public CcChart( Context context, AttributeSet attrs, int defStyleAttr ) {
         super( context, attrs, defStyleAttr );
-        init();
+        init( context );
     }
 
-    public void init() {
+    public void init( Context context ) {
         mText = "You need some useful data.";
         mTextColor = Color.RED;
         mTextSize = 48;
@@ -63,25 +63,35 @@ public class CcChart extends View {
         this.setOnTouchListener( new OnTouchListener() {
             @Override
             public boolean onTouch( View v, MotionEvent event ) {
-                float touchX, touchY;
-                switch ( event.getAction() ) {
+                float touchDownX = 0, touchDownY = 0, touchMoveX = 0, touchMoveY = 0, touchUpX = 0, touchUpY = 0;
+                switch ( event.getAction() & MotionEvent.ACTION_MASK ) {
                     case MotionEvent.ACTION_DOWN:
-                        touchX = event.getX();
-                        touchY = event.getY();
+                        touchDownX = event.getX();
+                        touchDownY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        touchMoveX = event.getX();
+                        touchMoveY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        touchUpX = event.getX();
+                        touchUpY = event.getY();
                         for ( int i = 0; i < label.getLabelData().size(); i++ ) {
-                            int result = label.getLabelData().get( i ).checkClick( touchX, touchY );
+                            int result = label.getLabelData().get( i ).checkClick( touchUpX, touchUpY );
                             if ( result != -1 && label.getListener() != null ) {
                                 label.getListener().onLabelClickListener( label.getLabelData().get( result ), result );
                                 return true;
                             }
                         }
                         break;
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
                 }
                 return false;
+            }
+        } );
+        this.setOnClickListener( new OnClickListener() {
+            @Override
+            public void onClick( View v ) {
+
             }
         } );
     }

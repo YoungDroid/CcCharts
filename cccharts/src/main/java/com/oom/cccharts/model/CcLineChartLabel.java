@@ -8,6 +8,7 @@ public class CcLineChartLabel extends CcChartLabel {
     float maxValueX;
     float minValueY;
     float maxValueY;
+    int labelCount;
 
     public CcLineChartLabel() {
         super();
@@ -15,6 +16,7 @@ public class CcLineChartLabel extends CcChartLabel {
         maxValueX = 100;
         minValueY = 0;
         maxValueY = 100;
+        labelCount = 7;
     }
 
     public float getMinValueX() {
@@ -47,5 +49,13 @@ public class CcLineChartLabel extends CcChartLabel {
 
     public void setMaxValueY( float maxValueY ) {
         this.maxValueY = maxValueY;
+    }
+
+    public int getLabelCount() {
+        return labelCount;
+    }
+
+    public void setLabelCount( int labelCount ) {
+        this.labelCount = labelCount;
     }
 }

@@ -1,5 +1,7 @@
 package com.oom.cccharts.model;
 
+import android.graphics.Color;
+
 /**
  * Created by CcYang on 2016/3/21.
  */
@@ -13,6 +15,8 @@ public class CcLineChartLabelEntity extends CcChartLabelEntity {
 
     public CcLineChartLabelEntity( String words ) {
         super( words );
+        this.paint.setTextSize( 58 );
+        this.paint.setColor( Color.BLACK );
         this.type = CcLabelChartType.Other;
     }
 
